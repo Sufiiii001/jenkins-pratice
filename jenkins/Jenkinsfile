@@ -16,7 +16,7 @@ pipeline {
     }
 
     stages {
-        stage('Clean workspace') {
+        stage('Clean workspacesssss') {
             steps {
                 cleanWs()
                 sh 'rm -rf /tmp/.npm'
