@@ -15,7 +15,9 @@ stage('Build') {
         sh '''
             sudo chown -R $(id -u):$(id -g) $HOME || true
             rm -rf node_modules package-lock.json $HOME/.npm
+
             npm cache clean --force
+            npm install --save-dev @testing-library/dom
             npm install --legacy-peer-deps --loglevel verbose
         '''
     }
