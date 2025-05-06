@@ -10,9 +10,13 @@ pipeline {
         HOME = '/tmp
     }
     stages {
-    stage('Clean') {
+stage('Clean workspace') {
     steps {
-        sh 'rm -rf node_modules package-lock.json'
+        sh '''
+            rm -rf node_modules
+            rm -rf package-lock.json
+            rm -rf ~/.npm
+        '''
     }
 }
         stage('Build') {
