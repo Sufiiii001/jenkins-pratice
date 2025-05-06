@@ -10,18 +10,21 @@ pipeline {
         HOME = '/tmp
     }
     stages {
-stage('Clean workspace') {
-    steps {
-        sh '''
-            rm -rf node_modules
-            rm -rf package-lock.json
-            rm -rf ~/.npm
-        '''
-    }
-}
+        stage('Clean workspace') {
+            steps {
+                sh '''
+                    rm -rf node_modules
+                    rm -rf package-lock.json
+                    rm -rf /tmp/.npm
+                '''
+            }
+        }
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh '''
+                    npm cache clean --force
+                    npm install --legacy-peer-deps --loglevel verbose
+                '''
             }
         }
         stage('Test') {
