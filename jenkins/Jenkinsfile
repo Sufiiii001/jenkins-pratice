@@ -9,20 +9,26 @@ pipeline {
         CI = 'true'
         HOME = '/tmp
     }
+        options {
+        skipDefaultCheckout(true) // Avoid automatic checkout before cleaning
+    }
     stages {
         stage('Clean workspace') {
             steps {
-                sh '''
-                    rm -rf node_modules
-                    rm -rf package-lock.json
-                    rm -rf /tmp/.npm
-                '''
+                cleanWs() // Jenkins plugin to clean workspace safely
+                sh 'rm -rf /tmp/.npm' // Clean NPM cache if any
+            }
+        }
+                stage('Checkout') {
+            steps {
+                checkout scm
             }
         }
         stage('Build') {
             steps {
                 sh '''
                     npm cache clean --force
+                    rm -rf node_modules package-lock.json
                     npm install --legacy-peer-deps --loglevel verbose
                 '''
             }
