@@ -7,13 +7,19 @@ pipeline {
     }
     environment {
         CI = 'true'
+        HOME = '/tmp'
     }
     stages {
-        stage('Build') {
-            steps {
-                sh 'npm install'
-            }
-        }
+stage('Build') {
+    steps {
+        sh '''
+            sudo chown -R $(id -u):$(id -g) $HOME || true
+            rm -rf node_modules package-lock.json $HOME/.npm
+            npm cache clean --force
+            npm install --legacy-peer-deps --loglevel verbose
+        '''
+    }
+}
         stage('Test') {
             steps {
                 sh './jenkins/scripts/test.sh'
